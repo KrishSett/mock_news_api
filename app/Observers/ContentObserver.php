@@ -12,7 +12,7 @@ class ContentObserver
      */
     public function created(Content $content): void
     {
-        NotifySubscribers::dispatch($content)->delay(now()->addMinutes(2));
+        NotifySubscribers::dispatch($content)->delay(now()->addMinutes(config("subscription.notification_delay")));
     }
 
     /**
