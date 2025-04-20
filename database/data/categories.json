@@ -1,0 +1,47 @@
+[
+    {
+        "slug": "sports",
+        "name": "Sports",
+        "active": true
+    },
+    {
+        "slug": "economy",
+        "name": "Economy",
+        "active": true
+    },
+    {
+        "slug": "politics",
+        "name": "Politics",
+        "active": true
+    },
+    {
+        "slug": "life-style",
+        "name": "Life Style",
+        "active": true
+    },
+    {
+        "slug": "world-affairs",
+        "name": "World Affairs",
+        "active": true
+    },
+    {
+        "slug": "latest-news",
+        "name": "Breaking News",
+        "active": true
+    },
+    {
+        "slug": "movies",
+        "name": "Bollowood Holloywood",
+        "active": true
+    },
+    {
+        "slug": "science",
+        "name": "Science",
+        "active": true
+    },
+    {
+        "slug": "career-graph",
+        "name": "Career Graph",
+        "active": false
+    }
+]

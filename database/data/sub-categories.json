@@ -1,0 +1,135 @@
+[
+    {
+        "category_id": 1,
+        "slug": "football",
+        "name": "Football",
+        "description": "News On Football",
+        "active": true
+    },
+    {
+        "category_id": 1,
+        "slug": "cricket",
+        "name": "Cricket",
+        "description": "News On Cricket",
+        "active": true
+    },
+    {
+        "category_id": 2,
+        "slug": "world-economy",
+        "name": "World Economy",
+        "description": "World's Economy",
+        "active": true
+    },
+    {
+        "category_id": 2,
+        "slug": "money-market",
+        "name": "Money Market",
+        "description": "Money Market Economy",
+        "active": true
+    },
+    {
+        "category_id": 3,
+        "slug": "local-politics",
+        "name": "Local Politics",
+        "description": "Local Political News",
+        "active": true
+    },
+    {
+        "category_id": 3,
+        "slug": "national-politics",
+        "name": "National Politics",
+        "description": "National Political News",
+        "active": true
+    },
+    {
+        "category_id": 4,
+        "slug": "fashion",
+        "name": "Fashion",
+        "description": "Fashion and Trends",
+        "active": true
+    },
+    {
+        "category_id": 4,
+        "slug": "health",
+        "name": "Health",
+        "description": "Health and Wellness",
+        "active": true
+    },
+    {
+        "category_id": 4,
+        "slug": "travel",
+        "name": "Travel",
+        "description": "Travel and Destinations",
+        "active": true
+    },
+    {
+        "category_id": 5,
+        "slug": "international-relations",
+        "name": "International Relations",
+        "description": "Global Diplomacy",
+        "active": true
+    },
+    {
+        "category_id": 5,
+        "slug": "global-conflicts",
+        "name": "Global Conflicts",
+        "description": "World Conflicts",
+        "active": true
+    },
+    {
+        "category_id": 6,
+        "slug": "breaking-news-local",
+        "name": "Local Breaking News",
+        "description": "Local Breaking News",
+        "active": true
+    },
+        {
+        "category_id": 6,
+        "slug": "breaking-news-national",
+        "name": "National Breaking News",
+        "description": "National Breaking News",
+        "active": true
+    },
+    {
+        "category_id": 7,
+        "slug": "bollywood",
+        "name": "Bollywood",
+        "description": "Bollywood News",
+        "active": true
+    },
+    {
+        "category_id": 7,
+        "slug": "hollywood",
+        "name": "Hollywood",
+        "description": "Hollywood News",
+        "active": true
+    },
+    {
+        "category_id": 8,
+        "slug": "physics",
+        "name": "Physics",
+        "description": "Physics News",
+        "active": true
+    },
+    {
+        "category_id": 8,
+        "slug": "chemistry",
+        "name": "Chemistry",
+        "description": "Chemistry News",
+        "active": true
+    },
+    {
+        "category_id": 8,
+        "slug": "biology",
+        "name": "Biology",
+        "description": "Biology News",
+        "active": true
+    },
+    {
+        "category_id": 8,
+        "slug": "space",
+        "name": "Space",
+        "description": "Space News",
+        "active": true
+    }
+]
