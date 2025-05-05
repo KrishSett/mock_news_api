@@ -17,21 +17,29 @@ class AuthController extends ApiBaseController
     public function login(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            "email" => ["required", "email"],
-            "password" => ["required"],
+            "token"    => ["required"]
         ]);
 
         if ($validate->fails()) {
             return $this->responseError($validate->errors()->first(), 422);
         }
 
-        $user = User::where("email", $request->email)->first();
-        if (Hash::check($request->password, $user->password)) {
+        $authData = decryptAuthHash($request->token);
+
+        if (empty($authData)) {
+            return $this->responseError('Access prohibited',403);
+        }
+
+        $email = $authData['email'];
+        $password = $authData['password'];
+
+        $user = User::where("email", $email)->first();
+        if (Hash::check($password, $user->password)) {
             auth()->login($user);
             // Revoke existing tokens for the user (optional, but good practice for single-device logins)
             $user->tokens()->delete();
             $token = auth()->user()->createToken("auth_token", ["*"], now()->addDay());
-            return $this->responseSuccess(['success' => true, 'token' => $token->plainTextToken], 201);
+            return $this->responseSuccess(['success' => true, 'token' => $token->plainTextToken, 'time' => currentMillisecond()], 201);
         }
 
         return $this->responseError('Auth failed',401);
