@@ -2,23 +2,23 @@
 
 namespace App\Services\API;
 
-use App\Contracts\API\NewsContrtact;
+use App\Contracts\API\NewsContract;
 
 class NewsService 
 {
     /**
-     * @var NewsContrtact 
+     * @var NewsContract 
      */
     protected $newsRepository;
 
     /**
      * Instance of the class
      * 
-     * @param \App\Contracts\API\NewsContrtact $newsRepository
+     * @param \App\Contracts\API\NewsContract $newsRepository
      */
-    public function __construct(NewsContrtact $newsContrtact)
+    public function __construct(NewsContract $newsContract)
     {
-        $this->newsRepository = $newsContrtact;
+        $this->newsRepository = $newsContract;
     }
 
     public function getNews(string $uuid): mixed

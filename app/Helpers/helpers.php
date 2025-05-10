@@ -40,10 +40,39 @@ if (!function_exists('decryptAuthHash')) {
     }
 }
 
+if (!function_exists('encryptAuthToken')) {
+    function encryptAuthToken(array $data): string
+    {
+        $jsonData = json_encode($data);
+        return base64_encode(base64_encode($jsonData) . env('ENCRYPTION_KEY'));
+    }
+}
 
 if (!function_exists('currentMillisecond')) {
     function currentMillisecond(): string
     {
-        return round(microtime(true) * 1000);;
+        return round(microtime(true) * 1000);
+    }
+}
+
+if (!function_exists('getClientIp')) {
+    function getClientIp(): string
+    {
+        $ipSources = [
+            'HTTP_CLIENT_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'HTTP_X_FORWARDED',
+            'HTTP_FORWARDED_FOR',
+            'HTTP_FORWARDED',
+            'REMOTE_ADDR'
+        ];
+
+        foreach ($ipSources as $source) {
+            if (!empty($_SERVER[$source])) {
+                return $_SERVER[$source];
+            }
+        }
+
+        return null;
     }
 }

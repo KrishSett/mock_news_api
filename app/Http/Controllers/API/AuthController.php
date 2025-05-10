@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\ApiBaseController;
 use App\Http\Middleware\HashVerify;
 use App\Models\API\HeaderHash;
+use App\Services\API\GuestTokenService;
+use App\Services\API\HeaderHashService;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,16 @@ use App\Models\User;
 
 class AuthController extends ApiBaseController
 {
+    protected $guestTokenService;
+    protected $headerHashService;
+
+    public function __construct(GuestTokenService $guestTokenService, HeaderHashService $headerHashService)
+    {
+        parent::__construct();
+        $this->guestTokenService = $guestTokenService;
+        $this->headerHashService = $headerHashService;
+    }
+
     public function login(Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -45,23 +57,44 @@ class AuthController extends ApiBaseController
         return $this->responseError('Auth failed',401);
     }
 
-    public function getHashes(Request $request)
+    public function guestHash(Request $request)
     {
         $validated = Validator::make($request->all(), [
-            'type' => ['required', 'exists:header_hashes,route_prefix']
+            'visitorId' => ['required', 'alpha-num']
         ]);
 
         if ($validated->fails()) {
             return $this->responseError($validated->errors()->first(), 422);
         }
 
-        $token = (new HeaderHash())->getHash($request->type);
+        $token = $this->guestTokenService->fetchGuestToken($request->visitorId);
+        if (empty($token)) {
+            $hashes = $this->headerHashService->fetchList();
 
-        if (!empty($token)) {
-            return $this->responseSuccess(['success'=> true,'token'=> $token],200);
+            if (empty($hashes)) {
+                return $this->responseError("No hashes found", 422);
+            }
+
+            $tokenData = [
+                'user'   => $request->visitorId,
+                'hashes' => $hashes,
+                'time'   => time()
+            ];
+
+            $token = encryptAuthToken($tokenData);
+            $created =  $this->guestTokenService->createToken([
+                $token,
+                $request->visitorId 
+            ]);
+
+            if (!$created) {
+                return $this->responseError("Something went wrong", 500);
+            }
         }
 
-        return $this->responseError('No token.',422);
+        return $this->responseSuccess([
+            '_tkn' => $token
+        ]);
     }
 
     public function logout(Request $request)

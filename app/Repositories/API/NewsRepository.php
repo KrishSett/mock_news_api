@@ -3,11 +3,11 @@
 namespace App\Repositories\API;
 
 
-use App\Contracts\API\NewsContrtact;
+use App\Contracts\API\NewsContract;
 use App\Repositories\BaseRepository;
 use App\Models\API\News;
 
-class NewsRepository extends BaseRepository implements NewsContrtact
+class NewsRepository extends BaseRepository implements NewsContract
 {
     /**
      * UserRepository constructor.

@@ -3,7 +3,7 @@
 namespace App\Contracts\API;
 
 /**
- * Interface UserContract
+ * Interface CategoryContract
  *
  * @package App\Contracts\API\CategoryContract
  */

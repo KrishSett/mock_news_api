@@ -5,7 +5,7 @@ namespace App\Models\API;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class HeaderHash extends Model
+class GuestToken extends Model
 {
     use SoftDeletes;
 
@@ -14,7 +14,7 @@ class HeaderHash extends Model
      *
      * @var string
      */
-    protected $table = "header_hashes";
+    protected $table = "guest_tokens";
 
     /**
      * The storage format of the model's date columns.
@@ -29,7 +29,23 @@ class HeaderHash extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        "route_prefix",
-        "hash"
+        "token",
+        "visitor_id",
+        "ip_address",
+        "expires_at"
     ];
+
+    public function checkHash($visitorId, $hash)
+    {
+        $exist = GuestToken::where('visitor_id', $visitorId)
+            ->select("token")
+            ->latest()
+            ->first();
+
+        if (empty($exist)) {
+            return false;
+        }
+
+        return $exist->token === $hash;
+    }
 }

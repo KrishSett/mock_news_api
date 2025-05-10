@@ -66,7 +66,7 @@ abstract class BaseRepository implements BaseContract
      */
     public function findOneBy(array $data): mixed
     {
-        return $this->model->where($data)->first();
+        return $this->model->where($data)->latest()->first();
     }
 
     /**

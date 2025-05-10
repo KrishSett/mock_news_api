@@ -15,9 +15,11 @@ use App\Http\Controllers\API\SubcategoryController;
 
 Route::post("/auth/login", [AuthController::class, "login"])->name("login");
 
-Route::group(["middleware" => ["throttle:api", "auth:sanctum", "logApi"], "name" => "api"], function () {
+//, "logApi"
 
-    Route::post("/hashes/get", [AuthController::class, "getHashes"])->name("hash.details");
+Route::group(["middleware" => ["throttle:api", "auth:sanctum"], "name" => "api"], function () {
+
+    Route::post("/guest/hash", [AuthController::class, "guestHash"])->name("guest.hash");
 
     Route::post("/content/create", [ContentController::class, "createContent"])->name("create.content");
 
