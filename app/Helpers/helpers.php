@@ -44,7 +44,7 @@ if (!function_exists('encryptAuthToken')) {
     function encryptAuthToken(array $data): string
     {
         $jsonData = json_encode($data);
-        return base64_encode(base64_encode($jsonData) . env('ENCRYPTION_KEY'));
+        return base64_encode(base64_encode($jsonData) .";". env('ENCRYPTION_KEY'));
     }
 }
 
@@ -52,6 +52,19 @@ if (!function_exists('currentMillisecond')) {
     function currentMillisecond(): string
     {
         return round(microtime(true) * 1000);
+    }
+}
+
+if (!function_exists('timestampInMilliseconds')) {
+    function timestampInMilliseconds(?string $modifier = null): string
+    {
+        $time = microtime(true);
+        
+        if ($modifier !== null) {
+            $time = strtotime($modifier, $time);
+        }
+        
+        return (string) round($time * 1000);
     }
 }
 

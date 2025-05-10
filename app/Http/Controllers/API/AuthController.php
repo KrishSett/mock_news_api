@@ -39,7 +39,7 @@ class AuthController extends ApiBaseController
         $authData = decryptAuthHash($request->token);
 
         if (empty($authData)) {
-            return $this->responseError('Access prohibited',403);
+            return $this->responseError('Access prohibited, invalid token',403);
         }
 
         $email = $authData['email'];
@@ -78,11 +78,11 @@ class AuthController extends ApiBaseController
             $tokenData = [
                 'user'   => $request->visitorId,
                 'hashes' => $hashes,
-                'time'   => time()
+                'time'   => timestampInMilliseconds('+1 week')
             ];
 
-            $token = encryptAuthToken($tokenData);
-            $created =  $this->guestTokenService->createToken([
+            $token   = encryptAuthToken($tokenData);
+            $created = $this->guestTokenService->createToken([
                 $token,
                 $request->visitorId 
             ]);
