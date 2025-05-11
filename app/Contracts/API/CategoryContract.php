@@ -15,7 +15,7 @@ interface CategoryContract
      * @param array $columns
      * @return mixed
      */
-    public function list(string $order = 'name', string $sort = 'asc', array $columns = ['*']): mixed;
+    public function list(string $order = 'list_order', string $sort = 'asc', array $columns = ['*']): mixed;
 
     /**
      * @param int $id
@@ -28,10 +28,4 @@ interface CategoryContract
      * @return mixed
      */
     public function findCategoryBySlug(string $slug): mixed;
-
-    /**
-     * @param string $slug
-     * @return mixed
-     */
-    public function fetchCategoryDetailsBySlug(string $slug): mixed;
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('name');
             $table->boolean('active')->default(true)->index();
+            $table->integer('list_orders');
             $table->timestamps();
             $table->softDeletes();
         });

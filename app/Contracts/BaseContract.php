@@ -2,6 +2,8 @@
 
 namespace App\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface BaseContract
 {
     /**
@@ -55,4 +57,11 @@ interface BaseContract
      * @return bool
      */
     public function delete(int $id): bool;
+
+    /**
+     * Get with relations
+     * @param array $relations
+     * @return Builder
+     */
+    public function with(array $relations): Builder;
 }

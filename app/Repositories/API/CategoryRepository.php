@@ -27,41 +27,71 @@ class CategoryRepository extends BaseRepository implements CategoryContract
      * @param array $columns
      * @return mixed
      */
-    public function list(string $order = 'name', string $sort = 'asc', array $columns = ['*']): mixed
+    public function list(string $order = 'list_order', string $sort = 'asc', array $columns = ['*']): mixed
     {
         $data = [];
-        $categories = $this->all($columns, $order, $sort)->filter(function ($item) {
-            return $item->active === true;
-        })->toArray();
+        $categories = $this->model->with(['subcategories'])
+            ->where('active', true)
+            ->orderBy($order, $sort)
+            ->select($columns)
+            ->get();
 
-        if (empty($categories)) {
-            return [];
+        if ($categories->isEmpty()) {
+            return $data;
         }
 
-        $data = array_combine(array_column($categories,'slug'), array_column($categories,'name'));
+        foreach ($categories as $category) {
+            $tmp                 = [];
+            $key                 = $category->slug;
+            $categoryName        = $category->name ?? '';
+            $data[$key]['title'] = $categoryName;
+            
+            if ($category->subcategories->isNotEmpty()) {
+                foreach ($category->subcategories as $subcategory) {
+                    $tmp[] = [
+                        'title' => $subcategory->name,
+                        'slug'  => $subcategory->slug,
+                        'href'  => '/' . $subcategory->slug,
+                    ];
+                }
+
+                $data[$key]['subcategories'] = $tmp;
+            } else {
+                $data[$key]['href'] = '/' . $key;
+            }
+        }
+
+        if (!empty($data)) {
+            $data = array_merge(['home' => [
+                'title' => 'Home',
+                'href' => '/'
+            ]], $data);
+        }
+
         return $data;
     }
 
+    /**
+     * Get category details with id
+     * 
+     * @param int $id
+     * @return mixed
+     */
     public function findCategoryById(int $id): mixed
     {
         $category = $this->model->find($id);
         return !empty($category) ? $category : [];
     }
 
+    /**
+     * Get summary of category by slug
+     * 
+     * @param string $slug
+     * @return mixed
+     */
     public function findCategoryBySlug(string $slug): mixed
     {
-        $category = $this->findOneBy(['slug' => $slug]);
-
-        return !empty($category) ? $category : [];
-    }
-
-    public function fetchCategoryDetailsBySlug(string $slug): mixed
-    {
-        $category = $this->model
-            ->where(['slug'=> $slug, 'active' => true])
-            ->with(['subcategories'])
-            ->first();
-
+        $category = $this->findOneBy(['slug' => $slug])?->activeCategories();
         return !empty($category) ? $category : [];
     }
 }

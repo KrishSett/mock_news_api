@@ -1,22 +1,22 @@
 [
     {
         "name": "categories",
-        "key": "cef762ac70bef88b707d7635850dd3b1"
+        "key" : "cef762ac70bef88b707d7635850dd3b1"
     },
     {
         "name": "subcategories",
-        "key": "578662fab5456927375c64b480258587"
+        "key" : "578662fab5456927375c64b480258587"
     },
     {
         "name": "front-news",
-        "key": "4bfaecfbe98e5e7031d4e26d8fa637b4"
+        "key" : "4bfaecfbe98e5e7031d4e26d8fa637b4"
     },
     {
         "name": "news",
-        "key": "76bd5115af1f2df76ee8e8f6668acb5f"
+        "key" : "76bd5115af1f2df76ee8e8f6668acb5f"
     },
     {
         "name": "details",
-        "key": "81f8bdb7cc77daae39b588e6f8c6cf87"
+        "key" : "81f8bdb7cc77daae39b588e6f8c6cf87"
     }
 ]

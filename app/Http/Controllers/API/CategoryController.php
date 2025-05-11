@@ -16,16 +16,15 @@ class CategoryController extends ApiBaseController
         $this->categoryService = $categoryService;
     }
 
+    /**
+     * List of all categories
+     */
     public function fetchCategories()
     {
-        $categories = $this->categoryService->fetchList([
-            'order' => 'name',
-            'sort' => 'asc', 
-            'columns' => [
-                'name',
-                'slug',
-                'active'
-            ]
+        $categories = $this->categoryService->fetchCategories([
+            'order'   => 'list_order',
+            'sort'    => 'asc',
+            'columns' => ['id', 'name', 'slug', 'active']
         ]);
         
         if (!empty($categories)) {
@@ -35,10 +34,15 @@ class CategoryController extends ApiBaseController
         return $this->responseError("No Data Found.", 400);
     }
 
+    /**
+     * Get details of category with slug
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $slug
+     */
     public function getCategory(Request $request, $slug)
     {
-        $category = $this->categoryService->fetchCategoryDetailsBySlug($slug);
-
+        $category = $this->categoryService->findCategoryBySlug($slug);
         if (!empty($category)) {
             return $this->responseSuccess($category);
         }

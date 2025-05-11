@@ -4,9 +4,8 @@ namespace App\Models\API;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\API\SubCategory;
 
-class Category extends Model
+class Page extends Model
 {
     use SoftDeletes;
 
@@ -15,7 +14,7 @@ class Category extends Model
      *
      * @var string
      */
-    protected $table = 'categories';
+    protected $table = 'pages';
 
     /**
      * The storage format of the model's date columns.
@@ -33,7 +32,9 @@ class Category extends Model
         "name",
         "slug",
         "active",
-        "list_order"
+        "list_order",
+        "footer_link",
+        "meta_title"
     ];
 
     /**
@@ -53,17 +54,8 @@ class Category extends Model
     protected function casts(): array
     {
         return [
-            'active' => 'boolean',
+            'active'      => 'boolean',
+            'footer_link' => 'boolean'
         ];
-    }
-
-    public function subcategories(array $options = [])
-    {
-        return $this->hasMany(SubCategory::class,"category_id","id");
-    }
-
-    public function activeCategories(): Category | null
-    {
-        return $this->active ? $this : null;
     }
 }

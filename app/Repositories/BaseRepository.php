@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\BaseContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository implements BaseContract
@@ -102,5 +103,16 @@ abstract class BaseRepository implements BaseContract
     public function delete(int $id) : bool
     {
         return $this->model->find($id)->delete();
+    }
+
+    /**
+     * To get a record with relations
+     *
+     * @param array $relations
+     * @return Builder
+     */
+    public function with(array $relations): Builder
+    {
+        return $this->model->with($relations);
     }
 }

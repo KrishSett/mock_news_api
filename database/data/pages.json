@@ -1,0 +1,74 @@
+[
+    {
+        "slug"       : "about-us",
+        "name"       : "About Us",
+        "description": "Learn about our newspaper's history, mission, and editorial team",
+        "active"     : true,
+        "list_order" : 1,
+        "footer_link": true,
+        "meta_title" : "About Our Newspaper | Our Story and Values"
+    },
+    {
+        "slug"       : "contact-us",
+        "name"       : "Contact Us",
+        "description": "Reach our editorial team, submit tips, or advertise with us",
+        "active"     : true,
+        "list_order" : 2,
+        "footer_link": true,
+        "meta_title" : "Contact Our Newspaper | Submissions and Advertising"
+    },
+    {
+        "slug"       : "privacy-policy",
+        "name"       : "Privacy Policy",
+        "description": "How we collect and protect user data",
+        "active"     : true,
+        "list_order" : 5,
+        "footer_link": true,
+        "meta_title" : "Privacy Policy | Data Protection Information"
+    },
+    {
+        "slug"       : "terms-conditions",
+        "name"       : "Terms & Conditions",
+        "description": "Legal terms for using our website and services",
+        "active"     : true,
+        "list_order" : 6,
+        "footer_link": true,
+        "meta_title" : "Terms of Service | Website Usage Guidelines"
+    },
+    {
+        "slug"       : "sitemap",
+        "name"       : "Sitemap",
+        "description": "Complete directory of all pages on our website",
+        "active"     : true,
+        "list_order" : 3,
+        "footer_link": true,
+        "meta_title" : "Website Sitemap | Browse All Sections"
+    },
+    {
+        "slug"       : "advertise",
+        "name"       : "Advertise With Us",
+        "description": "Marketing opportunities and rate cards",
+        "active"     : true,
+        "list_order" : 4,
+        "footer_link": false,
+        "meta_title" : "Advertising Options | Reach Our Audience"
+    },
+    {
+        "slug"       : "careers",
+        "name"       : "Careers",
+        "description": "Job openings and internship opportunities",
+        "active"     : true,
+        "list_order" : 7,
+        "footer_link": false,
+        "meta_title" : "Join Our Team | Career Opportunities"
+    },
+    {
+        "slug"       : "ethics-policy",
+        "name"       : "Ethics Policy",
+        "description": "Our journalistic standards and integrity guidelines",
+        "active"     : true,
+        "list_order" : 8,
+        "footer_link": true,
+        "meta_title" : "Editorial Ethics | Our Reporting Standards"
+    }
+]

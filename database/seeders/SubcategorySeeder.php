@@ -6,7 +6,7 @@ use App\Models\API\Subcategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SubcateorySeeder extends Seeder
+class SubcategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
