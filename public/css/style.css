@@ -45,11 +45,21 @@ p {
 .subtitle-text {
     font-size: 18px;
     color: #5b5b5b;
-    word-spacing: 2px;
+    letter-spacing: 1px;
     margin-top: 10px;
+    font-weight: bold;
 }
 
 .main-title {
     text-decoration: underline;
     text-shadow: 1px 1px 1px #444444;
+    font-size: 4rem;
+    color: #3b82f6;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration-color: #8b5cf6;
 }

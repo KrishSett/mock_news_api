@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    <h1><span class="main-title">{{ __('Mock News') }}</span></h1>
+    <h1><span class="main-title">{{ __('News Portal') }}</span></h1>
     <p class="subtitle-text">{{ __('A lightweight Laravel-based API provider.') }}</p>
 </body>
 </html>
