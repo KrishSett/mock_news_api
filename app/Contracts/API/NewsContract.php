@@ -10,4 +10,6 @@ namespace App\Contracts\API;
 interface NewsContract
 {
     public function getNews(string $uuid): mixed;
+
+    public function latestNews(): mixed;
 }

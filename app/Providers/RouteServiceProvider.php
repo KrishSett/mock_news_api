@@ -23,7 +23,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(1000)->by($request->user()?->id)->response(function (Request $request, array $headers) {
+            $userId = $request->hasHeader('X-User-Id') ? $request->header('X-User-Id') : $request->user()?->id;
+            return Limit::perMinute(1000)->by($userId)->response(function (Request $request, array $headers) {
                 return response()->json(['error' => true, 'message' => 'Too many Requests'], 429);
             });
         });

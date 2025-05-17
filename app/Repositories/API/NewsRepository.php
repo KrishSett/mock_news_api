@@ -39,4 +39,51 @@ class NewsRepository extends BaseRepository implements NewsContract
 
         return $news->only(['title', 'description', 'thumbnail', 'subcategory', 'tags']);
     }
+
+    public function latestNews(): array
+    {
+        // Get latest news with their IDs
+        $latest = $this->model->join('latest_contents', 'news.id', '=', 'latest_contents.news_id')
+            ->where('latest_contents.active', true)
+            ->select('news.id', 'news.uuid', 'news.title', 'news.thumbnail')
+            ->orderBy('latest_contents.order')
+            ->limit(config('homecontents.allowedContents', 5)) // Default to 5 if not set
+            ->get();
+
+        $newses = [
+            'latest' => $latest->toArray()
+        ];
+
+        // Get active categories from config
+        $activeCategories = array_filter(
+            config('homecontents.categories', []), 
+            fn($item) => $item['active'] ?? false
+        );
+
+        // Only query for categories if we have latest news to exclude
+        $latestNewsIds = $latest->pluck('id')->all();
+
+        foreach (array_keys($activeCategories) as $category) {
+            $newses[$category] = $this->getHomePageCategoryNews($category, $latestNewsIds);
+        }
+
+        return $newses;
+    }
+
+    protected function getHomePageCategoryNews(string $category, array $excludeIds = []): array
+    {
+        $query = $this->model->whereHas('subcategory.category', function ($query) use ($category) {
+                $query->where('slug', $category)
+                    ->where('active', 1);
+            })
+            ->select('id', 'uuid', 'title', 'thumbnail')
+            ->latest('created_at')
+            ->limit(config('homecontents.allowedContents', 5));
+
+        if (!empty($excludeIds)) {
+            $query->whereNotIn('id', $excludeIds);
+        }
+
+        return $query->get()->toArray();
+    }
 }

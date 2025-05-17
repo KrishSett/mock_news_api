@@ -25,4 +25,9 @@ class NewsService
     {
         return $this->newsRepository->getNews($uuid);
     }
+
+    public function getLatestNews(): mixed
+    {
+        return $this->newsRepository->latestNews();
+    }
 }
