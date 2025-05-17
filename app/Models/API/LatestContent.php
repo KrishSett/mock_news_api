@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\API;
+namespace App\Models\Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class News extends Model
+class LatestContent extends Model
 {
     use SoftDeletes;
 
@@ -14,7 +14,7 @@ class News extends Model
      *
      * @var string
      */
-    protected $table = 'news';
+    protected $table = 'latest_contents';
 
     /**
      * The storage format of the model's date columns.
@@ -29,30 +29,34 @@ class News extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        "title",
-        "description",
-        "thumbnail",
-        "subcategory_id",
+        "news_id",
+        "order",
         "active"
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<string>
+     */
     protected $hidden = [
-        "id",
-        "pivot"
+        "id"
     ];
 
-    public function subcategory()
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return $this->belongsTo(SubCategory::class, 'subcategory_id', 'id');
+        return [
+            'active' => 'boolean'
+        ];
     }
 
-    public function tags()
+    public function news()
     {
-        return $this->belongsToMany(Tags::class,'news_tags','news_id','tags_id')->withPivot('active');
-    }
-
-    public function latestContent()
-    {
-        return $this->hasOne(LatestContent::class);
+        return $this->belongsTo(News::class);
     }
 }
