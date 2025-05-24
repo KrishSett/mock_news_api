@@ -50,10 +50,9 @@ class CategoryService
         }
 
         return [
-            $category->slug => [
-                'name' => $category->name,
-                'href' => '/' . $category->slug
-            ]
+            'status' => true,
+            'name'   => $category->name,
+            'href'   => '/news-category/' . $category->slug
         ];
     }
 }

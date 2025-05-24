@@ -51,13 +51,13 @@ class CategoryRepository extends BaseRepository implements CategoryContract
                     $tmp[] = [
                         'title' => $subcategory->name,
                         'slug'  => $subcategory->slug,
-                        'href'  => '/' . $subcategory->slug,
+                        'href'  => '/news-category/' . $subcategory->slug,
                     ];
                 }
 
                 $data[$key]['subcategories'] = $tmp;
             } else {
-                $data[$key]['href'] = '/' . $key;
+                $data[$key]['href'] = '/news-category/' . $key;
             }
         }
 

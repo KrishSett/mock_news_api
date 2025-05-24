@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\ApiBaseController;
 use App\Services\API\CategoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends ApiBaseController
 {
@@ -21,6 +22,11 @@ class CategoryController extends ApiBaseController
      */
     public function fetchCategories()
     {
+        $cached = Cache::get(config('apicachekeys.categories.list'));
+        if (!empty($cached)) {
+            return $cached;
+        }
+        
         $categories = $this->categoryService->fetchCategories([
             'order'   => 'list_order',
             'sort'    => 'asc',
@@ -28,6 +34,7 @@ class CategoryController extends ApiBaseController
         ]);
         
         if (!empty($categories)) {
+            Cache::set(config('apicachekeys.categories.list'), $categories, 3600);
             return $this->responseSuccess($categories);
         }
 
