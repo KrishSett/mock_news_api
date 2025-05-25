@@ -59,7 +59,21 @@ class Category extends Model
 
     public function subcategories(array $options = [])
     {
-        return $this->hasMany(SubCategory::class,"category_id","id");
+        $query = $this->hasMany(SubCategory::class, 'category_id', 'id');
+
+        if ($options['active'] ?? false) {
+            $query->where('active', true);
+        }
+
+        if ($options['order_by'] ?? false) {
+            $query->orderBy($options['order_by'], $options['sort'] ?? 'asc');
+        }
+
+        if ($options['limit'] ?? false) {
+            $query->take($options['limit']);
+        }
+
+        return $query;
     }
 
     public function activeCategories(): Category | null

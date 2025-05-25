@@ -64,8 +64,8 @@
     },
     {
         "category_id": 5,
-        "slug"       : "international-relations",
-        "name"       : "International Relations",
+        "slug"       : "global-relations",
+        "name"       : "Global Relations",
         "description": "Global Diplomacy",
         "active"     : true
     },

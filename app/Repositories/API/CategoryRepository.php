@@ -30,7 +30,9 @@ class CategoryRepository extends BaseRepository implements CategoryContract
     public function list(string $order = 'list_order', string $sort = 'asc', array $columns = ['*']): mixed
     {
         $data = [];
-        $categories = $this->model->with(['subcategories'])
+        $categories = $this->model->with(['subcategories' => function ($query) {
+                $query->where('active', true);
+            }])
             ->where('active', true)
             ->orderBy($order, $sort)
             ->select($columns)
@@ -50,7 +52,6 @@ class CategoryRepository extends BaseRepository implements CategoryContract
                 foreach ($category->subcategories as $subcategory) {
                     $tmp[] = [
                         'title' => $subcategory->name,
-                        'slug'  => $subcategory->slug,
                         'href'  => '/news-category/' . $subcategory->slug,
                     ];
                 }
