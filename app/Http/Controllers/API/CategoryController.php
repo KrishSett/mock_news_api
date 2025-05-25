@@ -34,7 +34,8 @@ class CategoryController extends ApiBaseController
         ]);
         
         if (!empty($categories)) {
-            Cache::set(config('apicachekeys.categories.list'), $categories, 3600);
+            $ttl = config('apicachekeys.expiry', 60);
+            Cache::put(config('apicachekeys.categories.list'), $categories, $ttl);
             return $this->responseSuccess($categories);
         }
 

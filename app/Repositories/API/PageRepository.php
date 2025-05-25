@@ -64,7 +64,7 @@ class PageRepository extends BaseRepository implements PageContract
         $page = $this->model
             ->where('slug', $slug)
             ->where('active', true)
-            ->select(['slug', 'description'])
+            ->select(['slug', 'name', 'description'])
             ->first();
 
         if (empty($page)) {
@@ -72,7 +72,7 @@ class PageRepository extends BaseRepository implements PageContract
         }
 
         return [
-            'slug'        => $page->slug,
+            'title'       => $page->name,
             'description' => $page->description
         ];
     }
@@ -96,9 +96,8 @@ class PageRepository extends BaseRepository implements PageContract
             ->get()
             ->map(function ($page) {
                 return [
-                    'slug' => $page->slug,
-                    'name' => $page->name,
-                    'href' => '/pages/' . $page->slug
+                    'title' => $page->name,
+                    'href'  => '/pages/' . $page->slug
                 ];
             })
             ->toArray();

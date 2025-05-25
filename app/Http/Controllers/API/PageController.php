@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiBaseController;
 use App\Services\API\PageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class PageController extends ApiBaseController
 {
@@ -23,6 +24,11 @@ class PageController extends ApiBaseController
      */
     public function fetchPages(Request $request)
     {
+        $cached = Cache::get(config('apicachekeys.pages.list'));
+        if ($cached) {
+            return $cached;
+        }
+
         $pages = $this->pageService->fetchPages([
             'order'   => 'list_order',
             'sort'    => 'asc',
@@ -30,6 +36,8 @@ class PageController extends ApiBaseController
         ]);
 
         if (!empty($pages)) {
+            $ttl = config('apicachekeys.expiry', 60);
+            Cache::put(config('apicachekeys.pages.list'), $pages, $ttl);
             return $this->responseSuccess(
                 $pages,
                 200
@@ -61,12 +69,27 @@ class PageController extends ApiBaseController
      */
     public function otherPages()
     {
+        $cached = Cache::get(config('apicachekeys.pages.others'));
+        if ($cached) {
+            return $cached;
+        }
+
         $pages = $this->pageService->getOtherPages([
             'slug',
             'name'
         ], [
             'footer_link' => false
         ]);
-        return $this->responseSuccess($pages);
+
+        if (!empty($pages)) {
+            $ttl = config('apicachekeys.expiry', 60);
+            Cache::put(config('apicachekeys.pages.others'), $pages, $ttl);
+            return $this->responseSuccess(
+                $pages,
+                200
+            );
+        }
+
+        return $this->responseError('No pages or error must have been occurred while retrieving the pages', 400);
     }
 }
