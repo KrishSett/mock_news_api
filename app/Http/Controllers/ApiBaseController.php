@@ -8,10 +8,9 @@ class ApiBaseController extends Controller
 {
     public function __construct()
     {
-
     }
 
-    public function responseSuccess(array $data, int $httpStatus = 200)   
+    public function responseSuccess(array $data, int $httpStatus = 200)
     {
         return response()->json($data, $httpStatus);
     }

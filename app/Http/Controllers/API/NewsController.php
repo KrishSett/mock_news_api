@@ -55,7 +55,7 @@ class NewsController extends ApiBaseController
             'description'       => ['required', 'min:100', 'max:2000'],
             'thumbnail'         => ['nullable', 'image', 'mimes:jpg,jpeg'],
             'tags'              => ['required', 'array'],
-            'tags.*.id'           => ['required', 'integer', 'exists:tags,id']
+            'tags.*.id'         => ['required', 'integer', 'exists:tags,id']
         ]);
 
         if ($validator->fails()) {

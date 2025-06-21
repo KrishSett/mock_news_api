@@ -9,12 +9,13 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\SubcategoryController;
-
+use App\Http\Controllers\API\TagController;
 
 Route::post("/auth/login", [AuthController::class, "login"])->middleware(["logApi"])->name("login");
 
 // Back-end APIs
 Route::group(['prefix' => 'admin', 'middleware' => ['throttle:api', 'logApi'], 'name' => 'admin'], function () {
+    Route::get('/list/tags', [TagController::class, 'listTags'])->name('list.tags');
     Route::post('/create/news', [NewsController::class, 'createNews'])->name('create.news');
 });
 

@@ -21,8 +21,8 @@ interface NewsContract
     public function latestNews(): mixed;
 
     /**
-     * @param array $attr
+     * @param array $attributes
      * @return mixed
      */
-    public function createNews(array $attr):mixed;
+    public function createNews(array $attributes):mixed;
 }
