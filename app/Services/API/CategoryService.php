@@ -12,9 +12,9 @@ class CategoryService
     protected $categoryRepository;
 
     /**
-     * Instance of the class
-     * 
-     * @param \App\Contracts\API\CategoryContract $categoryRepository
+     * CategoryService constructor.
+     *
+     * @param CategoryContract $categoryRepository
      */
     public function __construct(CategoryContract $categoryRepository)
     {
@@ -22,8 +22,8 @@ class CategoryService
     }
 
     /**
-     * Fetch the full list of categories
-     * 
+     * Fetch the full list of categories.
+     *
      * @param array $params
      * @return mixed
      */
@@ -37,8 +37,8 @@ class CategoryService
     }
 
     /**
-     * Get category details with slug
-     * 
+     * Get category details with slug.
+     *
      * @param string $slug
      * @return mixed
      */

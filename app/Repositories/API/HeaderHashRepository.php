@@ -18,6 +18,11 @@ class HeaderHashRepository extends BaseRepository implements HeaderHashContract
         $this->model = $model;
     }
 
+    /**
+     * Fetch header hash token.
+     *
+     * @return array
+     */
     public function list(): array
     {
         $data = [];

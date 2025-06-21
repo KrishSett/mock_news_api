@@ -20,8 +20,8 @@ class CategoryRepository extends BaseRepository implements CategoryContract
     }
 
     /**
-     * Get list of all active categories
-     * 
+     * Get list of all active categories.
+     *
      * @param string $order
      * @param string $sort
      * @param array $columns
@@ -47,7 +47,7 @@ class CategoryRepository extends BaseRepository implements CategoryContract
             $key                 = $category->slug;
             $categoryName        = $category->name ?? '';
             $data[$key]['title'] = $categoryName;
-            
+
             if ($category->subcategories->isNotEmpty()) {
                 foreach ($category->subcategories as $subcategory) {
                     $tmp[] = [
@@ -73,8 +73,8 @@ class CategoryRepository extends BaseRepository implements CategoryContract
     }
 
     /**
-     * Get category details with id
-     * 
+     * Get category details with id.
+     *
      * @param int $id
      * @return mixed
      */
@@ -85,8 +85,8 @@ class CategoryRepository extends BaseRepository implements CategoryContract
     }
 
     /**
-     * Get summary of category by slug
-     * 
+     * Get summary of category by slug.
+     *
      * @param string $slug
      * @return mixed
      */

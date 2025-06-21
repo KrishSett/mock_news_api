@@ -19,6 +19,12 @@ class SubcategoryRepository extends BaseRepository implements SubcategoryContrac
         $this->model = $model;
     }
 
+    /**
+     * Fetch subcategory details with slug
+     *
+     * @param string $slug
+     * @return mixed
+     */
     public function fetchSubCategoryDetailsBySlug(string $slug): mixed
     {
         $category = $this->model

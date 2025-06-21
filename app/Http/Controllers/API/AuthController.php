@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\ApiBaseController;
-use App\Http\Middleware\HashVerify;
-use App\Models\API\HeaderHash;
 use App\Services\API\GuestTokenService;
 use App\Services\API\HeaderHashService;
 use Hash;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use App\Models\User;
 
 class AuthController extends ApiBaseController
@@ -19,6 +15,12 @@ class AuthController extends ApiBaseController
     protected $guestTokenService;
     protected $headerHashService;
 
+    /**
+     * AuthController constructor.
+     *
+     * @param GuestTokenService $guestTokenService
+     * @param HeaderHashService $headerHashService
+     */
     public function __construct(GuestTokenService $guestTokenService, HeaderHashService $headerHashService)
     {
         parent::__construct();
@@ -26,6 +28,11 @@ class AuthController extends ApiBaseController
         $this->headerHashService = $headerHashService;
     }
 
+    /**
+     * Process login request.
+     *
+     * @param Request $request
+     */
     public function login(Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -46,10 +53,10 @@ class AuthController extends ApiBaseController
         $password = $authData['password'];
 
         $user = User::where("email", $email)->first();
-        if (Hash::check($password, $user->password)) {
+        if (Hash::check($password, $user?->password)) {
             auth()->login($user);
             // Revoke existing tokens for the user (optional, but good practice for single-device logins)
-            $user->tokens()->delete();
+            $user?->tokens()->delete();
             $token = auth()->user()->createToken("auth_token", ["*"], now()->addDay());
             return $this->responseSuccess(['success' => true, 'token' => $token->plainTextToken, 'time' => currentMillisecond()], 201);
         }
@@ -84,7 +91,7 @@ class AuthController extends ApiBaseController
             $token   = encryptAuthToken($tokenData);
             $created = $this->guestTokenService->createToken([
                 $token,
-                $request->visitorId 
+                $request->visitorId
             ]);
 
             if (!$created) {

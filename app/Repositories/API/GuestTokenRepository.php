@@ -18,12 +18,24 @@ class GuestTokenRepository extends BaseRepository implements GuestTokenContract
         $this->model = $model;
     }
 
+    /**
+     * Crate guest token for visitors.
+     *
+     * @param array $attr
+     * @return bool
+     */
     public function createToken(array $attr): bool
     {
         $created = $this->create($attr);
         return $created ? true : false;
     }
 
+    /**
+     * Fetch visitor token with it's id.
+     *
+     * @param string $visitorId
+     * @return string|null
+     */
     public function fetchToken(string $visitorId): ?string
     {
         $token = $this->findOneBy(['visitor_id' => $visitorId]);

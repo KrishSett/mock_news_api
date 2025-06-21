@@ -29,7 +29,9 @@ class News extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        "uuid",
         "title",
+        "short_description",
         "description",
         "thumbnail",
         "subcategory_id",

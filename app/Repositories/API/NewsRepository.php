@@ -6,6 +6,7 @@ namespace App\Repositories\API;
 use App\Contracts\API\NewsContract;
 use App\Repositories\BaseRepository;
 use App\Models\API\News;
+use Illuminate\Support\Str;
 
 class NewsRepository extends BaseRepository implements NewsContract
 {
@@ -20,13 +21,19 @@ class NewsRepository extends BaseRepository implements NewsContract
         $this->model = $model;
     }
 
+    /**
+     * Get news details with uuid.
+     *
+     * @param string $uuid
+     * @return mixed
+     */
     public function getNews(string $uuid): mixed
     {
         $news = $this->model->where("uuid", $uuid)
             ->with([
                 "subcategory" => function ($query) {
                     $query->select("subcategories.id", "subcategories.slug");
-                }, 
+                },
                 "tags" => function ($query) {
                     $query->select("tags.id", "tags.slug");
                 }
@@ -40,6 +47,11 @@ class NewsRepository extends BaseRepository implements NewsContract
         return $news->only(['title', 'description', 'thumbnail', 'subcategory', 'tags']);
     }
 
+    /**
+     * Fetch latest newses.
+     *
+     * @return array
+     */
     public function latestNews(): array
     {
         // Get latest news with their IDs
@@ -56,8 +68,10 @@ class NewsRepository extends BaseRepository implements NewsContract
 
         // Get active categories from config
         $activeCategories = array_filter(
-            config('homecontents.categories', []), 
-            fn($item) => $item['active'] ?? false
+            config('homecontents.categories', []),
+            function ($item) {
+                return isset($item['active']) ? $item['active'] : false;
+            }
         );
 
         // Only query for categories if we have latest news to exclude
@@ -70,6 +84,13 @@ class NewsRepository extends BaseRepository implements NewsContract
         return $newses;
     }
 
+    /**
+     * Get newses based on categories.
+     *
+     * @param string $category
+     * @param array $excludeIds
+     * @return array
+     */
     protected function getHomePageCategoryNews(string $category, array $excludeIds = []): array
     {
         $query = $this->model->whereHas('subcategory.category', function ($query) use ($category) {
@@ -86,4 +107,34 @@ class NewsRepository extends BaseRepository implements NewsContract
 
         return $query->get()->toArray();
     }
+
+    public function createNews(array $attributes): mixed
+    {
+        $tagIds = array_column($attributes['tags'], 'id');
+        unset($attributes['tags']);
+
+        // Create flat associative array for sync
+        $tagsWithTimestamps = [];
+        $currentTime = now()->timezone('utc')->format('Y-m-d H:i:s');
+
+        foreach ($tagIds as $id) {
+            $tagsWithTimestamps[$id] = [
+                'created_at' => $currentTime,
+                'updated_at' => $currentTime,
+            ];
+        }
+
+        // Generate UUID
+        $attributes['uuid'] = Str::uuid()->toString();
+
+        $news = $this->create($attributes);
+
+        if ($news) {
+            $news->tags()->sync($tagsWithTimestamps);
+            return true;
+        }
+
+        return false;
+    }
+
 }

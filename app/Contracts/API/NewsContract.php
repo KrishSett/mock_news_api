@@ -9,7 +9,20 @@ namespace App\Contracts\API;
  */
 interface NewsContract
 {
+    /**
+     * @param string $uuid
+     * @return mixed
+     */
     public function getNews(string $uuid): mixed;
 
+    /**
+     * @return mixed
+     */
     public function latestNews(): mixed;
+
+    /**
+     * @param array $attr
+     * @return mixed
+     */
+    public function createNews(array $attr):mixed;
 }

@@ -13,13 +13,19 @@ use App\Http\Controllers\API\SubcategoryController;
 
 Route::post("/auth/login", [AuthController::class, "login"])->middleware(["logApi"])->name("login");
 
-Route::group(["middleware" => ["throttle:api", "auth:sanctum", "logApi"], "name" => "api"], function () {
+// Back-end APIs
+Route::group(['prefix' => 'admin', 'middleware' => ['throttle:api', 'logApi'], 'name' => 'admin'], function () {
+    Route::post('/create/news', [NewsController::class, 'createNews'])->name('create.news');
+});
+
+// Front-end APIS
+Route::group(['middleware' => ['throttle:api', 'auth:sanctum', 'logApi'], 'name' => 'api'], function () {
     ## Guest Token
-    Route::post("/guest/hash", [AuthController::class, "guestHash"])->name("guest.hash");
+    Route::post('/guest/hash', [AuthController::class, 'guestHash'])->name('guest.hash');
 
     ## Feed Endpoints
     Route::middleware('hashVerify')->prefix('feed')->group(function () {
-        Route::get("/home-page", [HomePageController::class, 'getContents'])->name('home.page');
+        Route::get('/home-page', [HomePageController::class, 'getContents'])->name('home.page');
         Route::get('/category-list', [CategoryController::class, 'fetchCategories'])->name('categories');
         Route::get('/category/{slug}', [CategoryController::class, 'getCategory'])->name('category.details')->where('slug', '[a-zA-Z0-9-]+');
         Route::get('/pages-list', [PageController::class, 'fetchPages'])->name('pages');
@@ -27,8 +33,8 @@ Route::group(["middleware" => ["throttle:api", "auth:sanctum", "logApi"], "name"
         Route::get('/pages/other', [PageController::class, 'otherPages'])->name('footer.links');
         Route::get('/subcategories/{slug}', [SubcategoryController::class, 'getSubcategory'])->name('category.details')->where('slug', '[a-zA-Z0-9-]+');
         Route::get('/news/details/{uuid}', [NewsController::class, 'getNews'])->name('news.details')->where('uuid', '[a-zA-Z0-9-]+');
-        Route::post("/content/create", [ContentController::class, "createContent"])->name("create.content");
+        Route::post('/content/create', [ContentController::class, 'createContent'])->name('create.content');
     });
 
-    Route::post("/auth/logout", [AuthController::class, "logout"])->name("logout");
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 });

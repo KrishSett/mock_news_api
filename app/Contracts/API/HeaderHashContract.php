@@ -9,5 +9,8 @@ namespace App\Contracts\API;
  */
 interface HeaderHashContract
 {
+    /**
+     * @return array
+     */
     public function list(): array;
 }

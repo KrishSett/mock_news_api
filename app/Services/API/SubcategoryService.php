@@ -12,15 +12,21 @@ class SubcategoryService
     protected $subCategoryRepository;
 
     /**
-     * Instance of the class
-     * 
-     * @param \App\Contracts\API\SubcategoryContract $subCategoryRepository
+     * SubcategoryService constructor.
+     *
+     * @param SubcategoryContract $subCategoryRepository
      */
     public function __construct(SubcategoryContract $subCategoryRepository)
     {
         $this->subCategoryRepository = $subCategoryRepository;
     }
 
+    /**
+     * fetch subcategory details with slug.
+     *
+     * @param string $slug
+     * @return mixed
+     */
     public function fetchSubcategoryDetailsBySlug(string $slug): mixed
     {
         $subcategory = $this->subCategoryRepository->fetchSubcategoryDetailsBySlug($slug);
@@ -30,7 +36,7 @@ class SubcategoryService
         }
 
         $news = $subcategory->news()
-            ->select("news.id", "news.uuid", "news.title", "news.short_desctiprion", "news.thumbnail")
+            ->select("news.id", "news.uuid", "news.title", "news.short_description", "news.thumbnail")
             ->with(['tags' => function ($query) {
                 $query->select("tags.id", "tags.slug")->wherePivot('active', 1);
             }])

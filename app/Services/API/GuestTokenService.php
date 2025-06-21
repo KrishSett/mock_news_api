@@ -12,15 +12,21 @@ class GuestTokenService
     protected $guestTokenRepository;
 
     /**
-     * Instance of the class
-     * 
-     * @param \App\Contracts\API\GuestTokenContract $guestTokenRepository
+     * GuestTokenService constructor.
+     *
+     * @param GuestTokenContract $guestTokenRepository
      */
     public function __construct(GuestTokenContract $guestTokenRepository)
     {
         $this->guestTokenRepository = $guestTokenRepository;
     }
 
+    /**
+     * Create guest token for visitors.
+     *
+     * @param array $attr
+     * @return bool
+     */
     public function createToken(array $attr): bool
     {
         $params =  [
@@ -33,6 +39,12 @@ class GuestTokenService
         return $this->guestTokenRepository->createToken($params);
     }
 
+    /**
+     * Fetch guest token for a visitor's id.
+     *
+     * @param string $visitorId
+     * @return string|null
+     */
     public function fetchGuestToken(string $visitorId): ?string
     {
         return $this->guestTokenRepository->fetchToken($visitorId);

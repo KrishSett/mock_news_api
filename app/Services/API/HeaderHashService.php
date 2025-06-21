@@ -12,9 +12,9 @@ class HeaderHashService
     protected $headerHashRepository;
 
     /**
-     * Instance of the class
-     * 
-     * @param \App\Contracts\API\HeaderHashContract $headerHashRepository
+     * HeaderHashService constructor.
+     *
+     * @param HeaderHashContract $headerHashRepository
      */
     public function __construct(HeaderHashContract $headerHashRepository)
     {
@@ -22,8 +22,8 @@ class HeaderHashService
     }
 
     /**
-     * Fetch the full list of categories
-     * 
+     * Fetch the full list of categories.
+     *
      * @param array $params
      * @return array
      */
@@ -43,7 +43,8 @@ class HeaderHashService
     }
 
     /**
-     * Generate hash key
+     * Generate hash key from header hash.
+     *
      * @param string $headerHash
      * @return string|null
      */

@@ -12,9 +12,9 @@ class PageService
     protected $pageRepository;
 
     /**
-     * Service constructor
-     * 
-     * @param \App\Contracts\API\PageContract $pageRepository
+     * PageService constructor.
+     *
+     * @param PageContract $pageRepository
      */
     public function __construct(PageContract $pageRepository)
     {
@@ -22,8 +22,8 @@ class PageService
     }
 
     /**
-     * Get all static pages with optional sorting/filtering
-     * 
+     * Get all static pages with optional sorting/filtering.
+     *
      * @param array $params
      * @return mixed
      */
@@ -37,8 +37,8 @@ class PageService
     }
 
     /**
-     * Get full page details by slug
-     * 
+     * Get full page details by slug.
+     *
      * @param string $slug
      * @return mixed
      */
@@ -48,8 +48,8 @@ class PageService
     }
 
     /**
-     * Get only other pages
-     * 
+     * Get only other pages.
+     *
      * @param array $columns
      * @param array $filter
      * @return mixed

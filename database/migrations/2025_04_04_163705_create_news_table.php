@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->index();
             $table->string('title');
-            $table->string('short_desctiprion', 200);
+            $table->string('short_description', 200);
             $table->text('description');
             $table->string('thumbnail')->nullable();
             $table->unsignedBigInteger('subcategory_id')->index();

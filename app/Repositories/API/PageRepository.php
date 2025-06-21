@@ -22,8 +22,8 @@ class PageRepository extends BaseRepository implements PageContract
     }
 
     /**
-     * Get list of all active pages
-     * 
+     * Get list of all active pages.
+     *
      * @param string $order
      * @param string $sort
      * @param array $columns
@@ -54,8 +54,8 @@ class PageRepository extends BaseRepository implements PageContract
     }
 
     /**
-     * Get full page details by slug
-     * 
+     * Get full page details by slug.
+     *
      * @param string $slug
      * @return mixed
      */
@@ -78,8 +78,8 @@ class PageRepository extends BaseRepository implements PageContract
     }
 
     /**
-     * Get filtered pages with custom conditions
-     * 
+     * Get filtered pages with custom conditions.
+     *
      * @param array $columns
      * @param array $filters
      * @return mixed

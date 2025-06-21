@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\ApiBaseController;
-use App\Http\Controllers\Controller;
 use App\Models\API\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ContentController extends ApiBaseController
 {
+    /**
+     * Create contents.
+     *
+     * @param Request $request
+     */
     public function createContent(Request $request)
     {
         $validator = Validator::make($request->all(), [
