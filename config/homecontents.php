@@ -15,5 +15,5 @@ return [
             'active' => false
         ]
     ],
-    'allowedContents' => 5
+    'allowedContents' => 6
 ];
