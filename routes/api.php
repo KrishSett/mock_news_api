@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\ContentController;
 use App\Http\Controllers\API\HomePageController;
+use App\Http\Controllers\API\LatestContentController;
 use App\Http\Controllers\API\PageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +17,9 @@ Route::post("/auth/login", [AuthController::class, "login"])->middleware(["logAp
 // Back-end APIs
 Route::group(['prefix' => 'admin', 'middleware' => ['throttle:api', 'logApi'], 'name' => 'admin'], function () {
     Route::get('/list/tags', [TagController::class, 'listTags'])->name('list.tags');
+    Route::post('/create/tag', [TagController::class, 'createTag'])->name('create.tag');
     Route::post('/create/news', [NewsController::class, 'createNews'])->name('create.news');
+    Route::post('/create/latest-content', [LatestContentController::class, 'createLatestContent'])->name('create.latest.content');
 });
 
 // Front-end APIS

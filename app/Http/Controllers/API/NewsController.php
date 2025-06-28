@@ -66,12 +66,12 @@ class NewsController extends ApiBaseController
         $created = $this->newsService->createNews($params);
 
         if (!$created) {
-            return $this->responseError('Failed to create news', 500);
+            return $this->responseError('Failed to create news.', 500);
         }
 
         return $this->responseSuccess([
             'success' => true,
-            'message' => 'Success'
+            'message' => 'News created successfully.'
         ], 200);
     }
 }

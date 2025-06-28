@@ -24,7 +24,6 @@ class HeaderHashService
     /**
      * Fetch the full list of categories.
      *
-     * @param array $params
      * @return array
      */
     public function fetchList(): array
@@ -35,11 +34,9 @@ class HeaderHashService
             return [];
         }
 
-        $data = array_map(function ($item) {
+        return array_map(function ($item) {
             return $this->getHashKey($item);
         }, $hashes);
-
-        return $data;
     }
 
     /**
@@ -58,7 +55,7 @@ class HeaderHashService
             $headerHash,
             sha1(getenv('HASH_KEY_SALT') . time()),
             \Carbon\Carbon::now('UTC')->addDay()->timestamp,
-            uniqid(),
+            uniqid('NP', false),
         ];
 
         return base64_encode(implode('|', $hashAttr));

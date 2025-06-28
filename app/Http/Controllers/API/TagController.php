@@ -9,14 +9,27 @@ use Illuminate\Support\Facades\Validator;
 
 class TagController extends ApiBaseController
 {
+    /**
+     * @var TagService
+     */
     protected $tagService;
 
+    /**
+     * TagController constructor.
+     *
+     * @param TagService $tagService
+     */
     public function __construct(TagService $tagService)
     {
         parent::__construct();
         $this->tagService = $tagService;
     }
 
+    /**
+     * List of all tags.
+     *
+     * @param \Illuminate\Http\Request $request
+     */
     public function listTags(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -24,17 +37,38 @@ class TagController extends ApiBaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->responseError($validator->errors()->first());
+            return $this->responseValidationError($validator->errors()->all());
         }
 
         return $this->tagService->listTags($request->all());
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create a new tag.
+     *
+     * @param Request $request
      */
     public function createTag(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name'        => ['required', 'alpha', 'min:2', 'max:20', 'unique:tags,name'],
+            'description' => ['required', 'min:5', 'max:100'],
+            'active'      => ['required', 'boolean']
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseValidationError($validator->errors()->all());
+        }
+
+        $created = $this->tagService->createTag($request->all());
+
+        if (!$created) {
+            return $this->responseError('Failed to create tags.');
+        }
+
+        return $this->responseSuccess([
+            'success' => true,
+            'message' => 'Tag created successfully.'
+        ], 200);
     }
 }

@@ -4,10 +4,12 @@ namespace App\Models\API;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Tags extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasSlug;
 
     /**
      * The table associated with the model.
@@ -42,6 +44,16 @@ class Tags extends Model
     protected $hidden = [
         "pivot"
     ];
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
 
     public function news()
     {

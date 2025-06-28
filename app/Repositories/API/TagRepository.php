@@ -43,10 +43,18 @@ class TagRepository extends BaseRepository implements TagContract
     }
 
     /**
-     * @inheritDoc
+     * Create a tag.
+     *
+     * @param array $attributes
+     * @return mixed
      */
     public function createTag(array $attributes): mixed
     {
-        // TODO: Implement createTag() method.
+        try {
+            $created = $this->create($attributes);
+            return (bool) $created;
+        } catch (\PDOException $e) {
+            return false;
+        }
     }
 }

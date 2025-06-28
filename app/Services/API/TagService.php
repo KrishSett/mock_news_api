@@ -24,7 +24,7 @@ class TagService
     }
 
     /**
-     * List of all tags based on filter
+     * List of all tags based on filter.
      *
      * @param array $filter
      * @return mixed
@@ -35,12 +35,12 @@ class TagService
     }
 
     /**
-     * Create a tag
+     * Create a tag.
      *
      * @param array $attributes
      * @return mixed
      */
-    public function createTag(array $attributes)
+    public function createTag(array $attributes): mixed
     {
         return $this->tagRepository->createTag($attributes);
     }

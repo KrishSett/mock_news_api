@@ -57,7 +57,7 @@ class NewsRepository extends BaseRepository implements NewsContract
         // Get latest news with their IDs
         $latest = $this->model->join('latest_contents', 'news.id', '=', 'latest_contents.news_id')
             ->where('latest_contents.active', true)
-            ->select('news.id', 'news.uuid', 'news.title', 'news.thumbnail')
+            ->select('news.id', 'news.uuid', 'news.title', 'news.thumbnail', 'news.short_description')
             ->orderBy('latest_contents.order')
             ->limit(config('homecontents.allowedContents', 5)) // Default to 5 if not set
             ->get();
@@ -97,7 +97,7 @@ class NewsRepository extends BaseRepository implements NewsContract
                 $query->where('slug', $category)
                     ->where('active', 1);
             })
-            ->select('id', 'uuid', 'title', 'thumbnail')
+            ->select('id', 'uuid', 'title', 'thumbnail', 'short_description')
             ->latest('created_at')
             ->limit(config('homecontents.allowedContents', 5));
 
