@@ -104,16 +104,18 @@ if (!function_exists('getPrivateImageBase64')) {
             if (!file_exists($normalizedPath) || !is_readable($normalizedPath)) {
                 return [];
             }
-        
-            // Return data for thumbnail lazy loading
+
+            // Build HTTP-accessible URL to a custom route (must be defined)
+            $publicUrl = url('/private-image/' . rawurlencode($filename));
+
             return [
-                'alt'               => config('homecontents.alt_prefix', 'news') .':'. $alt,
-                'src'               => $normalizedPath,
+                'alt'               => config('homecontents.alt_prefix', 'news') . ':' . $alt,
+                'src'               => $publicUrl,
                 'mime'              => mime_content_type($normalizedPath) ?: 'image/jpeg',
                 'placeholder_image' => config('homecontents.placeholder_image', '')
             ];
         } catch (\Exception $e) {
-            Log::error("Lazy load data error - ". $e->getMessage());
+            Log::error("Lazy load data error - " . $e->getMessage());
             return [];
         }
     }
