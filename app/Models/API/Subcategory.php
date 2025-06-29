@@ -4,10 +4,12 @@ namespace App\Models\API;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Subcategory extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasSlug;
 
     /**
      * The table associated with the model.
@@ -36,11 +38,31 @@ class Subcategory extends Model
         "active"
     ];
 
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    /**
+     * Foreign key relation with Category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function category()
     {
         return $this->belongsTo(Category::class, "category_id", "id");
     }
 
+    /**
+     * One to many relation with News
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function news()
     {
         return $this->hasMany(News::class,"subcategory_id", "id");

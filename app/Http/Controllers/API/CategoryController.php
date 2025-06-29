@@ -9,8 +9,16 @@ use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends ApiBaseController
 {
+    /**
+     * @var CategoryService
+     */
     protected $categoryService;
 
+    /**
+     * CategoryController constructor.
+     *
+     * @param CategoryService $categoryService
+     */
     public function __construct(CategoryService $categoryService)
     {
         parent::__construct();
@@ -18,7 +26,7 @@ class CategoryController extends ApiBaseController
     }
 
     /**
-     * List of all categories
+     * List of all categories.
      */
     public function fetchCategories()
     {
@@ -26,13 +34,13 @@ class CategoryController extends ApiBaseController
         if (!empty($cached)) {
             return $cached;
         }
-        
+
         $categories = $this->categoryService->fetchCategories([
             'order'   => 'list_order',
             'sort'    => 'asc',
             'columns' => ['id', 'name', 'slug', 'active']
         ]);
-        
+
         if (!empty($categories)) {
             $ttl = config('apicachekeys.expiry', 60);
             Cache::put(config('apicachekeys.categories.list'), $categories, $ttl);
@@ -43,8 +51,8 @@ class CategoryController extends ApiBaseController
     }
 
     /**
-     * Get details of category with slug
-     * 
+     * Get details of category with slug.
+     *
      * @param \Illuminate\Http\Request $request
      * @param mixed $slug
      */

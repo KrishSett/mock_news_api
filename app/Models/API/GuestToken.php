@@ -35,6 +35,13 @@ class GuestToken extends Model
         "expires_at"
     ];
 
+    /**
+     * Check and validate guest-hash
+     *
+     * @param $visitorId
+     * @param $hash
+     * @return bool
+     */
     public function checkHash($visitorId, $hash)
     {
         $exist = GuestToken::where('visitor_id', $visitorId)

@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class NewsController extends ApiBaseController
 {
+    /**
+     * @var NewsService
+     */
     protected $newsService;
 
     /**
@@ -43,7 +46,7 @@ class NewsController extends ApiBaseController
 
     /**
      * Create a news.
-     * 
+     *
      * @param Request $request
      */
     public function createNews(Request $request)
@@ -59,7 +62,7 @@ class NewsController extends ApiBaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->responseError($validator->errors()->first());
+            return $this->responseValidationError($validator->errors()->all());
         }
 
         $params = $request->all();

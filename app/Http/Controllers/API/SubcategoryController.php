@@ -9,14 +9,28 @@ use Illuminate\Support\Facades\Validator;
 
 class SubcategoryController extends ApiBaseController
 {
+    /**
+     * @var SubcategoryService
+     */
     protected $subcategoryService;
 
+    /**
+     * SubcategoryController constructor.
+     *
+     * @param SubcategoryService $subcategoryService
+     */
     public function __construct(SubcategoryService $subcategoryService)
     {
         parent::__construct();
         $this->subcategoryService = $subcategoryService;
     }
 
+    /**
+     * Get subcategory.
+     *
+     * @param Request $request
+     * @param $slug
+     */
     public function getSubcategory(Request $request, $slug)
     {
         $validator = Validator::make($request->all(), [
@@ -24,7 +38,7 @@ class SubcategoryController extends ApiBaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->responseError($validator->errors()->first(), 422); // Use 422 for validation errors
+            return $this->responseValidationError($validator->errors()->all()); // Use 422 for validation errors
         }
 
         $page = 1;

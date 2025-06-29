@@ -55,6 +55,11 @@ class Tags extends Model
             ->saveSlugsTo('slug');
     }
 
+    /**
+     * Foreign key relation with News
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function news()
     {
         return $this->belongsToMany(News::class, 'news_tags', 'tags_id', 'news_id');

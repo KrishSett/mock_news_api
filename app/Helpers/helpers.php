@@ -89,3 +89,32 @@ if (!function_exists('getClientIp')) {
         return null;
     }
 }
+
+
+if (!function_exists('getPrivateImageBase64')) {
+    function getLazyLoadImageData(string $filename, string $alt): mixed
+    {
+        if (empty($filename)) {
+            return [];
+        }
+
+        try {
+            $normalizedPath = storage_path('app' . DIRECTORY_SEPARATOR . 'private' . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $filename));
+
+            if (!file_exists($normalizedPath) || !is_readable($normalizedPath)) {
+                return [];
+            }
+        
+            // Return data for thumbnail lazy loading
+            return [
+                'alt'               => config('homecontents.alt_prefix', 'news') .':'. $alt,
+                'src'               => $normalizedPath,
+                'mime'              => mime_content_type($normalizedPath) ?: 'image/jpeg',
+                'placeholder_image' => config('homecontents.placeholder_image', '')
+            ];
+        } catch (\Exception $e) {
+            Log::error("Lazy load data error - ". $e->getMessage());
+            return [];
+        }
+    }
+}

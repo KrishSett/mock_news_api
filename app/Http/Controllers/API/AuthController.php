@@ -12,7 +12,14 @@ use App\Models\User;
 
 class AuthController extends ApiBaseController
 {
+    /**
+     * @var GuestTokenService
+     */
     protected $guestTokenService;
+
+    /**
+     * @var HeaderHashService
+     */
     protected $headerHashService;
 
     /**
@@ -64,6 +71,11 @@ class AuthController extends ApiBaseController
         return $this->responseError('Auth failed',401);
     }
 
+    /**
+     * Create guest hash.
+     *
+     * @param Request $request
+     */
     public function guestHash(Request $request)
     {
         $validated = Validator::make($request->all(), [
@@ -104,6 +116,11 @@ class AuthController extends ApiBaseController
         ]);
     }
 
+    /**
+     * Process auth logout.
+     *
+     * @param Request $request
+     */
     public function logout(Request $request)
     {
         request()->user()->currentAccessToken()->delete();

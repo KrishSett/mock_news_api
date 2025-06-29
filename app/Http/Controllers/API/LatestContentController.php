@@ -25,6 +25,11 @@ class LatestContentController extends ApiBaseController
         $this->latestContentService = $latestContentService;
     }
 
+    /**
+     * Create a latest content.
+     *
+     * @param Request $request
+     */
     public function createLatestContent(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -34,7 +39,7 @@ class LatestContentController extends ApiBaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->responseValidationError($validator->errors()->toArray());
+            return $this->responseValidationError($validator->errors()->all());
         }
 
         $created = $this->latestContentService->createLatestContent(($request->all()));

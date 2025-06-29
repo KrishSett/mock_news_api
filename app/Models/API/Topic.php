@@ -54,7 +54,9 @@ class Topic extends Model
     }
 
     /**
-     * Get all subscribers subscribed to this topic.
+     * Get all subscribers subscribed to this topic
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function subscribers()
     {
@@ -63,6 +65,8 @@ class Topic extends Model
 
     /**
      * Get all contents under this topic.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function contents()
     {

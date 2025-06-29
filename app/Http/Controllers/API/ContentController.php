@@ -25,7 +25,7 @@ class ContentController extends ApiBaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->responseError($validator->errors()->first());
+            return $this->responseValidationError($validator->errors()->all());
         }
 
         $content = Content::create($request->all());

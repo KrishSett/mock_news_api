@@ -10,16 +10,25 @@ use Illuminate\Support\Facades\Cache;
 
 class PageController extends ApiBaseController
 {
+    /**
+     * @var PageService
+     */
     protected $pageService;
 
+    /**
+     * PageController constructor.
+     *
+     * @param PageService $pageService
+     */
     public function __construct(PageService $pageService)
     {
+        parent::__construct();
         $this->pageService = $pageService;
     }
 
     /**
-     * Get all active pages
-     * 
+     * Get all active pages.
+     *
      * @param Request $request
      */
     public function fetchPages(Request $request)
@@ -49,7 +58,7 @@ class PageController extends ApiBaseController
 
     /**
      * Get single page by slug
-     * 
+     *
      * @param Request $request
      * @param string $slug
      */

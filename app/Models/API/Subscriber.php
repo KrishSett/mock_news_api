@@ -46,6 +46,8 @@ class Subscriber extends Model
 
     /**
      * Get all topics this subscriber is subscribed to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function topics()
     {

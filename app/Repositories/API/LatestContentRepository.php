@@ -2,7 +2,7 @@
 
 namespace App\Repositories\API;
 
-use App\Models\Api\LatestContent;
+use App\Models\API\LatestContent;
 use App\Repositories\BaseRepository;
 use App\Contracts\API\LatestContentContract;
 
@@ -21,7 +21,7 @@ class LatestContentRepository extends BaseRepository implements LatestContentCon
 
     /**
      * Create latest content.
-     * 
+     *
      * @param array $attr
      * @return bool
      */

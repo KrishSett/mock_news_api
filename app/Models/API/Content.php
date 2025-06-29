@@ -38,6 +38,8 @@ class Content extends Model
 
     /**
      * Get the topic that this content belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function topic()
     {

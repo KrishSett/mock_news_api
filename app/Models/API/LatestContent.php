@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Api;
+namespace App\Models\API;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -55,6 +55,11 @@ class LatestContent extends Model
         ];
     }
 
+    /**
+     * Foreign key relation with News
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function news()
     {
         return $this->belongsTo(News::class);
