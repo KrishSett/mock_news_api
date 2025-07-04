@@ -38,6 +38,7 @@ Route::group(['middleware' => ['throttle:api', 'auth:sanctum', 'logApi'], 'name'
         Route::get('/subcategories/{slug}', [SubcategoryController::class, 'getSubcategory'])->name('category.details')->where('slug', '[a-zA-Z0-9-]+');
         Route::get('/news/details/{uuid}', [NewsController::class, 'getNews'])->name('news.details')->where('uuid', '[a-zA-Z0-9-]+');
         Route::post('/content/create', [ContentController::class, 'createContent'])->name('create.content');
+        Route::post('/tag/news', [TagController::class, 'tagNews'])->name('tag.news');
     });
 
     // Logout

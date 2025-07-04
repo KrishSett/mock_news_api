@@ -51,7 +51,7 @@ class TagController extends ApiBaseController
     public function createTag(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'        => ['required', 'alpha', 'min:2', 'max:20', 'unique:tags,name'],
+            'name'        => ['required', 'min:2', 'max:20', 'unique:tags,name'],
             'description' => ['required', 'min:5', 'max:100'],
             'active'      => ['required', 'boolean']
         ]);
@@ -70,5 +70,20 @@ class TagController extends ApiBaseController
             'success' => true,
             'message' => 'Tag created successfully.'
         ], 200);
+    }
+
+    public function tagNews(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tags'        => ['required', 'array']
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseValidationError($validator->errors()->all());
+        }
+
+        $tagNews = $this->tagService->tagNews($request->tags);
+
+        return $this->responseSuccess($tagNews, 200);
     }
 }

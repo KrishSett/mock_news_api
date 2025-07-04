@@ -44,7 +44,9 @@ class NewsRepository extends BaseRepository implements NewsContract
             return null; // Or you could return an appropriate error response
         }
 
-        return $news->only(['title', 'description', 'thumbnail', 'subcategory', 'tags']);
+        $news = $news->only(['title', 'description', 'thumbnail', 'subcategory', 'tags', 'created_at']);
+        $news['created_at'] = \Carbon\Carbon::parse($news['created_at'])->format("F j, Y");
+        return $news;
     }
 
     /**

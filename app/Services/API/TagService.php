@@ -44,4 +44,9 @@ class TagService
     {
         return $this->tagRepository->createTag($attributes);
     }
+
+    public function tagNews(array $tags): mixed
+    {
+        return $this->tagRepository->tagNews($tags);
+    }
 }

@@ -3,12 +3,15 @@
 
 namespace App\Repositories\API;
 
+use App\Models\API\News;
 use App\Models\API\Tags;
 use App\Repositories\BaseRepository;
 use App\Contracts\API\TagContract;
 
 class TagRepository extends BaseRepository implements TagContract
 {
+    protected $newsModel;
+
     /**
      * TagRepository constructor.
      *
@@ -17,6 +20,7 @@ class TagRepository extends BaseRepository implements TagContract
     public function __construct(Tags $model)
     {
         parent::__construct($model);
+        $this->newsModel = new News();
     }
 
     /**
@@ -56,5 +60,36 @@ class TagRepository extends BaseRepository implements TagContract
         } catch (\PDOException $e) {
             return false;
         }
+    }
+
+    /**
+     * Fetch tag(s) related news
+     * 
+     * @param array $tags
+     * @return array
+     */
+    public function tagNews(array $tags): array
+    {
+        $tagIds = $this->model->whereIn('slug', $tags)->pluck('id')->toArray();
+
+        if (empty($tagIds)) {
+            return [];
+        }
+
+        $news = $this->newsModel
+            ->whereHas('tags', fn ($query) => $query->whereIn('tags_id', $tagIds)) // adjust if your pivot key is different
+            ->select('uuid', 'title', 'thumbnail', 'short_description')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return $news->map(function ($item) {
+            return [
+                'uuid'              => $item->uuid,
+                'title'             => $item->title,
+                'thumbnail'         => $item->thumbnail,
+                'short_description' => $item->short_description,
+            ];
+        })->toArray();
     }
 }

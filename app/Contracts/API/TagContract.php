@@ -19,4 +19,10 @@ interface TagContract
      * @return mixed
      */
     public function createTag(array $attributes): mixed;
+
+    /**
+     * @param array $tags
+     * @return void
+     */
+    public function tagNews(array $tags): array;
 }
