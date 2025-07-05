@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\ApiBaseController;
 use App\Http\Controllers\Controller;
 use App\Services\API\NewsService;
+use App\Services\API\TagService;
 use Illuminate\Http\Request;
 use App\Models\API\News;
 use Illuminate\Support\Facades\Validator;
@@ -17,14 +18,20 @@ class NewsController extends ApiBaseController
     protected $newsService;
 
     /**
+     * @var TagService
+     */
+    protected $tagService;
+
+    /**
      * NewsController constructor.
      *
      * @param NewsService $newsService
      */
-    public function __construct(NewsService $newsService)
+    public function __construct(NewsService $newsService, TagService $tagService)
     {
         parent::__construct();
         $this->newsService = $newsService;
+        $this->tagService  = $tagService;
     }
 
     /**
@@ -38,6 +45,9 @@ class NewsController extends ApiBaseController
         $news = $this->newsService->getNews($uuid);
 
         if (!empty($news)) {
+            $tags = collect($news['tags'])->pluck('slug')->toArray();
+            $news['related_news'] = $this->tagService->tagNews($tags);
+
             return $this->responseSuccess($news, 200);
         }
 

@@ -4,9 +4,11 @@ namespace App\Repositories\API;
 
 
 use App\Contracts\API\NewsContract;
+use App\Http\Resources\API\NewsResource;
 use App\Repositories\BaseRepository;
 use App\Models\API\News;
 use Illuminate\Support\Str;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class NewsRepository extends BaseRepository implements NewsContract
 {
@@ -41,7 +43,7 @@ class NewsRepository extends BaseRepository implements NewsContract
             ->first();
 
         if (!$news) {
-            return null; // Or you could return an appropriate error response
+            return null;
         }
 
         $news = $news->only(['title', 'description', 'thumbnail', 'subcategory', 'tags', 'created_at']);
@@ -50,56 +52,52 @@ class NewsRepository extends BaseRepository implements NewsContract
     }
 
     /**
-     * Fetch latest newses.
+     * Fetch latest news grouped by category.
      *
-     * @return array
+     * @return AnonymousResourceCollection>
      */
     public function latestNews(): array
     {
-        // Get latest news with their IDs
-        $latest = $this->model->join('latest_contents', 'news.id', '=', 'latest_contents.news_id')
+        // Get latest news joined with latest_contents table
+        $latestNews = $this->model
+            ->join('latest_contents', 'news.id', '=', 'latest_contents.news_id')
             ->where('latest_contents.active', true)
-            ->select('news.id', 'news.uuid', 'news.title', 'news.thumbnail', 'news.short_description')
             ->orderBy('latest_contents.order')
-            ->limit(config('homecontents.allowedContents', 5)) // Default to 5 if not set
-            ->get();
+            ->limit(config('homecontents.allowedContents', 5))
+            ->get(['news.*']);
 
-        $newses = [
-            'latest' => $latest->toArray()
+        $news = [
+            'latest' => NewsResource::collection($latestNews),
         ];
 
         // Get active categories from config
         $activeCategories = array_filter(
             config('homecontents.categories', []),
-            function ($item) {
-                return isset($item['active']) ? $item['active'] : false;
-            }
+            fn($item) => !empty($item['active'])
         );
 
-        // Only query for categories if we have latest news to exclude
-        $latestNewsIds = $latest->pluck('id')->all();
+        $latestNewsIds = $latestNews->pluck('id')->all();
 
         foreach (array_keys($activeCategories) as $category) {
-            $newses[$category] = $this->getHomePageCategoryNews($category, $latestNewsIds);
+            $news[$category] = $this->getHomePageCategoryNews($category, $latestNewsIds);
         }
 
-        return $newses;
+        return $news;
     }
 
     /**
-     * Get newses based on categories.
+     * Get news items based on category, excluding latest.
      *
      * @param string $category
      * @param array $excludeIds
-     * @return array
+     * @return AnonymousResourceCollection
      */
-    protected function getHomePageCategoryNews(string $category, array $excludeIds = []): array
+    protected function getHomePageCategoryNews(string $category, array $excludeIds = []): AnonymousResourceCollection
     {
         $query = $this->model->whereHas('subcategory.category', function ($query) use ($category) {
                 $query->where('slug', $category)
-                    ->where('active', 1);
+                    ->where('active', true);
             })
-            ->select('id', 'uuid', 'title', 'thumbnail', 'short_description')
             ->latest('created_at')
             ->limit(config('homecontents.allowedContents', 5));
 
@@ -107,9 +105,15 @@ class NewsRepository extends BaseRepository implements NewsContract
             $query->whereNotIn('id', $excludeIds);
         }
 
-        return $query->get()->toArray();
+        return NewsResource::collection($query->get());
     }
 
+    /**
+     * Create a news
+     * 
+     * @param array $attributes
+     * @return bool
+     */
     public function createNews(array $attributes): mixed
     {
         $tagIds = array_column($attributes['tags'], 'id');
@@ -138,5 +142,7 @@ class NewsRepository extends BaseRepository implements NewsContract
 
         return false;
     }
+
+
 
 }

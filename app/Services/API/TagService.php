@@ -5,6 +5,7 @@ namespace App\Services\API;
 
 
 use App\Contracts\API\TagContract;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TagService
 {
@@ -45,7 +46,13 @@ class TagService
         return $this->tagRepository->createTag($attributes);
     }
 
-    public function tagNews(array $tags): mixed
+    /**
+     * Get all newses related to given tag(s)
+     * 
+     * @param array $tags
+     * @return AnonymousResourceCollection
+     */
+    public function tagNews(array $tags): AnonymousResourceCollection
     {
         return $this->tagRepository->tagNews($tags);
     }

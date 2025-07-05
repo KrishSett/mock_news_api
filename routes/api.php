@@ -4,7 +4,6 @@ use App\Http\Controllers\API\ContentController;
 use App\Http\Controllers\API\HomePageController;
 use App\Http\Controllers\API\LatestContentController;
 use App\Http\Controllers\API\PageController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;

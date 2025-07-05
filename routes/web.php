@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/private-image/{filename}', [ImageController::class, 'showPrivateImage'])->where('filename', '.*');
+Route::get('/np-image/{filename}', [ImageController::class, 'showPrivateImage'])->where('filename', '.*');

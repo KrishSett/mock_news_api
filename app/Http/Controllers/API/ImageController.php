@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ImageController extends ApiBaseController
 {
+    /**
+     * Display news images
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function showPrivateImage(Request $request): mixed
     {
         $filename = $request?->filename ?? '';

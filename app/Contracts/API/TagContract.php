@@ -1,6 +1,8 @@
 <?php
 namespace App\Contracts\API;
 
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
 /**
  * Interface TagContract
  *
@@ -22,7 +24,7 @@ interface TagContract
 
     /**
      * @param array $tags
-     * @return void
+     * @return AnonymousResourceCollection
      */
-    public function tagNews(array $tags): array;
+    public function tagNews(array $tags): AnonymousResourceCollection;
 }

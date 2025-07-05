@@ -72,10 +72,16 @@ class TagController extends ApiBaseController
         ], 200);
     }
 
+    /**
+     * Get tag relates newses
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function tagNews(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'tags'        => ['required', 'array']
+            'tags' => ['required', 'array']
         ]);
 
         if ($validator->fails()) {
@@ -83,7 +89,6 @@ class TagController extends ApiBaseController
         }
 
         $tagNews = $this->tagService->tagNews($request->tags);
-
-        return $this->responseSuccess($tagNews, 200);
+        return response()->json($tagNews);
     }
 }

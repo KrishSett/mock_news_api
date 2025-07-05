@@ -106,7 +106,7 @@ if (!function_exists('getPrivateImageBase64')) {
             }
 
             // Build HTTP-accessible URL to a custom route (must be defined)
-            $publicUrl = url('/private-image/' . rawurlencode($filename));
+            $publicUrl = url('/np-image/' . rawurlencode($filename));
 
             return [
                 'alt'               => config('homecontents.alt_prefix', 'news') . ':' . $alt,

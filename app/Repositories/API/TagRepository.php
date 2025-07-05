@@ -3,10 +3,12 @@
 
 namespace App\Repositories\API;
 
+use App\Http\Resources\API\NewsResource;
 use App\Models\API\News;
 use App\Models\API\Tags;
 use App\Repositories\BaseRepository;
 use App\Contracts\API\TagContract;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TagRepository extends BaseRepository implements TagContract
 {
@@ -63,33 +65,32 @@ class TagRepository extends BaseRepository implements TagContract
     }
 
     /**
-     * Fetch tag(s) related news
+     * Fetch tag(s) related news.
      * 
      * @param array $tags
-     * @return array
+     * @return AnonymousResourceCollection
      */
-    public function tagNews(array $tags): array
+    public function tagNews(array $tags): AnonymousResourceCollection
     {
-        $tagIds = $this->model->whereIn('slug', $tags)->pluck('id')->toArray();
+        // Get tag IDs from tag slugs
+        $tagIds = $this->model
+            ->whereIn('slug', $tags)
+            ->pluck('id')
+            ->toArray();
 
+        // Return empty resource collection if no tags matched
         if (empty($tagIds)) {
-            return [];
+            return NewsResource::collection(collect());
         }
 
+        // Fetch news matching tags
         $news = $this->newsModel
-            ->whereHas('tags', fn ($query) => $query->whereIn('tags_id', $tagIds)) // adjust if your pivot key is different
-            ->select('uuid', 'title', 'thumbnail', 'short_description')
+            ->whereHas('tags', fn($query) => $query->whereIn('tags_id', $tagIds))
             ->orderBy('created_at', 'desc')
-            ->limit(5)
+            ->limit(config('homecontents.tagLimit', 5))
             ->get();
 
-        return $news->map(function ($item) {
-            return [
-                'uuid'              => $item->uuid,
-                'title'             => $item->title,
-                'thumbnail'         => $item->thumbnail,
-                'short_description' => $item->short_description,
-            ];
-        })->toArray();
+        return NewsResource::collection($news);
     }
+
 }
