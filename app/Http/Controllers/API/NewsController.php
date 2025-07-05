@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\ApiBaseController;
-use App\Http\Controllers\Controller;
 use App\Services\API\NewsService;
 use App\Services\API\TagService;
 use Illuminate\Http\Request;
-use App\Models\API\News;
 use Illuminate\Support\Facades\Validator;
 
 class NewsController extends ApiBaseController
@@ -46,7 +44,7 @@ class NewsController extends ApiBaseController
 
         if (!empty($news)) {
             $tags = collect($news['tags'])->pluck('slug')->toArray();
-            $news['related_news'] = $this->tagService->tagNews($tags);
+            $news['related_news'] = $this->tagService->tagNews($tags, $uuid);
 
             return $this->responseSuccess($news, 200);
         }

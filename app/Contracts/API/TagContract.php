@@ -24,7 +24,8 @@ interface TagContract
 
     /**
      * @param array $tags
+     * @param string|null $exceptNewsId;
      * @return AnonymousResourceCollection
      */
-    public function tagNews(array $tags): AnonymousResourceCollection;
+    public function tagNews(array $tags, ?string $exceptNewsId = null): AnonymousResourceCollection;
 }

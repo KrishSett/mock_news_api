@@ -50,10 +50,11 @@ class TagService
      * Get all newses related to given tag(s)
      * 
      * @param array $tags
+     * @param string|null $exceptNewsId
      * @return AnonymousResourceCollection
      */
-    public function tagNews(array $tags): AnonymousResourceCollection
+    public function tagNews(array $tags, ?string $exceptNewsId = null): AnonymousResourceCollection
     {
-        return $this->tagRepository->tagNews($tags);
+        return $this->tagRepository->tagNews($tags, $exceptNewsId);
     }
 }

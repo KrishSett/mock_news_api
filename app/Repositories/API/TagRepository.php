@@ -68,9 +68,10 @@ class TagRepository extends BaseRepository implements TagContract
      * Fetch tag(s) related news.
      * 
      * @param array $tags
+     * @param string|null $exceptNewsId
      * @return AnonymousResourceCollection
      */
-    public function tagNews(array $tags): AnonymousResourceCollection
+    public function tagNews(array $tags, ?string $exceptNewsId = null): AnonymousResourceCollection
     {
         // Get tag IDs from tag slugs
         $tagIds = $this->model
@@ -84,13 +85,20 @@ class TagRepository extends BaseRepository implements TagContract
         }
 
         // Fetch news matching tags
-        $news = $this->newsModel
-            ->whereHas('tags', fn($query) => $query->whereIn('tags_id', $tagIds))
-            ->orderBy('created_at', 'desc')
+        $query = $this->newsModel
+            ->whereHas('tags', function($query) use($tagIds){
+                return $query->whereIn('tags_id', $tagIds);
+            })
+            ->distinct();
+        
+        if (!empty($query)) {
+            $query = $query->whereNot('uuid', $exceptNewsId);
+        }
+        
+        $news = $query->orderBy('created_at', 'desc')
             ->limit(config('homecontents.tagLimit', 5))
             ->get();
 
         return NewsResource::collection($news);
     }
-
 }
