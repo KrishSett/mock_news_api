@@ -51,10 +51,11 @@ class TagService
      * 
      * @param array $tags
      * @param string|null $exceptNewsId
+     * @param bool $hasLimit
      * @return AnonymousResourceCollection
      */
-    public function tagNews(array $tags, ?string $exceptNewsId = null): AnonymousResourceCollection
+    public function tagNews(array $tags, ?string $exceptNewsId = null, bool $hasLimit = false): AnonymousResourceCollection
     {
-        return $this->tagRepository->tagNews($tags, $exceptNewsId);
+        return $this->tagRepository->tagNews($tags, $exceptNewsId, $hasLimit);
     }
 }

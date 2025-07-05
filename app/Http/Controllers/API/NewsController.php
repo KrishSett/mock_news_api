@@ -44,7 +44,7 @@ class NewsController extends ApiBaseController
 
         if (!empty($news)) {
             $tags = collect($news['tags'])->pluck('slug')->toArray();
-            $news['related_news'] = $this->tagService->tagNews($tags, $uuid);
+            $news['related_news'] = $this->tagService->tagNews($tags, $uuid, true);
 
             return $this->responseSuccess($news, 200);
         }
