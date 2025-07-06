@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\ApiBaseController;
 use App\Services\API\TagService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class TagController extends ApiBaseController
@@ -33,14 +34,24 @@ class TagController extends ApiBaseController
     public function listTags(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'type' => ['required', 'in:active,all']
+            'type' => ['required', 'in:active,inactive,all']
         ]);
 
         if ($validator->fails()) {
             return $this->responseValidationError($validator->errors()->all());
         }
 
-        return $this->tagService->listTags($request->all());
+        $cached = Cache::get(config('apicachekeys.tags.list'));
+        if ($cached) {
+            return $cached;
+        }
+
+        $tags = $this->tagService->listTags($request->all());
+        if ($tags) {
+            Cache::put(config('apicachekeys.tags.list'), $tags, config('apicachekeys.expiry'));
+        }
+
+        return $tags;
     }
 
     /**

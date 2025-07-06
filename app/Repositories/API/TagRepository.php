@@ -33,16 +33,21 @@ class TagRepository extends BaseRepository implements TagContract
      */
     public function listTags(array $filter): mixed
     {
-        $active = $filter['type'] !== 'all' ? ['active' => true] : [];
+        $active = $filter['type'] !== 'all' ? ['active' => (bool)($filter['type'] == 'active')] : [];
         $tags = $this->findBy($active);
 
         if ($tags->isNotEmpty()) {
-            return $tags->map(function ($item) {
+            $tags = $tags->sortBy('name', SORT_NATURAL)->map(function ($item) {
                 return [
-                    'id' => $item->id,
+                    'id'   => $item->id,
                     'name' => $item->name
                 ];
-            });
+            })->all();
+
+            return array_combine(
+                array_column($tags, 'id'), 
+                array_column($tags, 'name')
+            );
         }
 
         return [];
