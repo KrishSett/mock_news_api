@@ -108,7 +108,7 @@ class TagRepository extends BaseRepository implements TagContract
             return NewsResource::collection($news->get());    
         } else {
             $news = $query;
-            return NewsResource::collection($news->paginate(2));    
+            return NewsResource::collection($news->paginate(config('news.news_paginate')));    
         }
     }
 }

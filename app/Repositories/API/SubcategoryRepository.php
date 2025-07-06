@@ -3,6 +3,7 @@
 namespace App\Repositories\API;
 
 use App\Contracts\API\SubcategoryContract;
+use App\Http\Resources\API\NewsResource;
 use App\Repositories\BaseRepository;
 use App\Models\API\Subcategory;
 
@@ -27,11 +28,16 @@ class SubcategoryRepository extends BaseRepository implements SubcategoryContrac
      */
     public function fetchSubCategoryDetailsBySlug(string $slug): mixed
     {
-        $category = $this->model
+        $subcategory = $this->model
             ->where(['slug'=> $slug, 'active' => true])
             ->with(['news', 'news.tags'])
             ->first();
 
-        return !empty($category) ? $category : [];
+        if (empty($subcategory)) {
+            return [];
+        }
+
+        $news = $subcategory->news()->orderBy('created_at','desc');
+        return NewsResource::collection($news->paginate(config('news.news_paginate')));
     }
 }

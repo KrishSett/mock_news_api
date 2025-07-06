@@ -38,20 +38,9 @@ class SubcategoryController extends ApiBaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->responseValidationError($validator->errors()->all()); // Use 422 for validation errors
+            return $this->responseValidationError($validator->errors()->all());
         }
 
-        $page = 1;
-        if ($request->has('page')) {
-            $page = (int) $request->page;
-        }
-
-        $subcategory = $this->subcategoryService->fetchSubcategoryDetailsBySlug($slug);
-
-        if (!empty($subcategory)) {
-            return $this->responseSuccess($subcategory);
-        }
-
-        return $this->responseError("No Subcategory Found.", 400);
+        return $this->subcategoryService->fetchSubcategoryDetailsBySlug($slug);
     }
 }

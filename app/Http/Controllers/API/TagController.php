@@ -92,6 +92,7 @@ class TagController extends ApiBaseController
     public function tagNews(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            "page" => ["nullable", "integer", "min:1"],
             'tags' => ['required', 'array']
         ]);
 
@@ -99,7 +100,6 @@ class TagController extends ApiBaseController
             return $this->responseValidationError($validator->errors()->all());
         }
 
-        $tagNews = $this->tagService->tagNews($request->tags);
-        return $tagNews;
+        return $this->tagService->tagNews($request->tags);
     }
 }
