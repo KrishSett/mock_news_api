@@ -99,11 +99,11 @@ class TagRepository extends BaseRepository implements TagContract
         $query = $query->orderBy('created_at', 'desc');
 
         if ($hasLimit) {
-            $query = $query->limit(config('homecontents.tagLimit', 5));
+            $news = $query->limit(config('homecontents.tagLimit', 5));
+            return NewsResource::collection($news->get());    
+        } else {
+            $news = $query;
+            return NewsResource::collection($news->paginate(2));    
         }
-
-        $news = $query->get();
-
-        return NewsResource::collection($news);
     }
 }

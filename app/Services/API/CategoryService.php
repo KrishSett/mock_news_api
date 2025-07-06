@@ -52,7 +52,7 @@ class CategoryService
         return [
             'status' => true,
             'name'   => $category->name,
-            'href'   => '/news-category/' . $category->slug
+            'href'   => '/news/category/' . $category->slug
         ];
     }
 }

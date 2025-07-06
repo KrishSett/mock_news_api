@@ -52,13 +52,13 @@ class CategoryRepository extends BaseRepository implements CategoryContract
                 foreach ($category->subcategories as $subcategory) {
                     $tmp[] = [
                         'title' => $subcategory->name,
-                        'href'  => '/news-category/' . $subcategory->slug,
+                        'href'  => '/news/category/' . $subcategory->slug,
                     ];
                 }
 
                 $data[$key]['subcategories'] = $tmp;
             } else {
-                $data[$key]['href'] = '/news-category/' . $key;
+                $data[$key]['href'] = '/news/category/' . $key;
             }
         }
 

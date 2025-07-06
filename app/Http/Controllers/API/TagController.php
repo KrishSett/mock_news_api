@@ -89,6 +89,6 @@ class TagController extends ApiBaseController
         }
 
         $tagNews = $this->tagService->tagNews($request->tags);
-        return response()->json($tagNews);
+        return $tagNews;
     }
 }
