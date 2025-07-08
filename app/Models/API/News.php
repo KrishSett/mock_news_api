@@ -5,6 +5,7 @@ namespace App\Models\API;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Route;
 
 class News extends Model
 {
@@ -53,7 +54,7 @@ class News extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if (!empty($value) && strlen($value) > config('homecontents.short_description_truncate_length', 50)) {
+                if (!in_array(Route::currentRouteName(), ['news.details']) && !empty($value) && strlen($value) > config('homecontents.short_description_truncate_length', 50)) {
                     $length = (int) (config('homecontents.short_description_truncate_length', 50) - 3);
                     return substr($value, 0, $length) . '...';
                 }
